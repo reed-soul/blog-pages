@@ -11,12 +11,16 @@ defaultContentLanguage = "en-us"
 enableEmoji = true
 ignoreErrors = ["additional-script-loading-error"] # ignore error of loading additional scripts.
 
-theme = "github.com/hugo-sid/hugo-blog-awesome"
-
-[module]
-  [[module.imports]]
-    path = "github.com/hugo-sid/hugo-blog-awesome"
-
+# modern way: pull in theme component as hugo module
+#[module]
+  # Uncomment the next line to build and serve using local theme clone declared in the named Hugo workspace:
+  # workspace = "hugo-blog-awesome.work"
+  #[module.hugoVersion]
+    #extended = true
+    #min = "0.87.0"
+  #[[module.imports]]
+    #path = "github.com/hugo-sid/hugo-blog-awesome"
+    #disable = false
 
 
 # set markup.highlight.noClasses=false to enable code highlight
