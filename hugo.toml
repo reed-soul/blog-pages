@@ -1,5 +1,5 @@
 title = 'reedSoul`s blog'
-baseURL = 'https://reedsoul.me'
+baseURL = 'https://blog-pages-mu.vercel.app/'
 
 # This is what goes in <html lang="">
 languageCode = 'en-us'
