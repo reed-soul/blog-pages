@@ -11,6 +11,7 @@ defaultContentLanguage = "en-us"
 enableEmoji = true
 ignoreErrors = ["additional-script-loading-error"] # ignore error of loading additional scripts.
 
+theme = "github.com/hugo-sid/hugo-blog-awesome"
 
 [module]
   [[module.imports]]
