@@ -22,6 +22,12 @@ workspace = "hugo-blog-awesome.work"
     path = "github.com/hugo-sid/hugo-blog-awesome"
     disable = false
 
+[services]
+# To enable Google Analytics 4 (gtag.js) provide G-MEASUREMENT_ID below.
+# To disable Google Analytics, simply leave the field empty or remove the next two lines
+  [services.googleAnalytics]
+    id = 'G-5S9636T9CQ' # G-MEASUREMENT_ID
+
 
 # set markup.highlight.noClasses=false to enable code highlight
 [markup]
