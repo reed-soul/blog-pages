@@ -1,8 +1,8 @@
----
-title: "Deepseek对我职业困惑的建议"
-date: 2023-12-28T15:00:00+08:00
-draft: false
----
++++
+date = '2025-02-14T23:21:16+08:00'
+draft = false 
+title = 'Deepseek对我职业困惑的建议'
++++
 
 ## 我的提问
 
