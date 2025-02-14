@@ -1,8 +1,10 @@
-+++
-date = '2025-02-14T23:21:16+08:00'
-draft = false 
-title = 'Deepseek对我职业困惑的建议'
-+++
+---
+title: "deepseek对我职业困惑的建议"
+date: 2025-02-14T18:02:31+08:00
+draft: false
+description:
+isStarred: false
+---
 
 ## 我的提问
 
