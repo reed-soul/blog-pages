@@ -46,16 +46,67 @@ flowchart LR
   D --> E[外网]
 ```
 
-## 快速上手（概念版）
+## 快速上手（可直接照做）
 
-1. 准备本机可用的 SOCKS5/HTTP 代理（Clash/Mihomo 等）。
-2. 从 Release 获取 `version.dll` 与 `config.json`。
-3. 将这两个文件放到 Antigravity 主程序目录（与 `Antigravity.exe` 同级）。
-4. 启动 Antigravity，观察日志确认代理是否生效。
+### Step 0：确认前置条件
 
-注意事项（README 有明确提示）：
-- **x86/x64 要匹配**：DLL 位数需与目标程序一致。
-- **运行库缺失会报错**：例如 0xC0000142，需要安装 VC++ 运行库。
+- **系统**：Windows x86/x64。
+- **代理**：本机有可用的 SOCKS5/HTTP 代理（README 建议优先 SOCKS5）。
+- **端口**：确认代理监听端口（例如 `127.0.0.1:7890`）。
+
+### Step 1：下载文件
+
+从 Release 下载两个文件：
+- `version.dll`
+- `config.json`
+
+如果你是自己编译，产物在 `output/` 目录里。
+
+> 注意：`version.dll` 的 **x86/x64 位数必须与目标程序一致**。
+
+### Step 2：配置代理（只改三项即可）
+
+打开 `config.json`，只需要改这三项，其它保持默认：
+
+```json
+"proxy": {
+  "host": "127.0.0.1",
+  "port": 7890,
+  "type": "socks5"
+}
+```
+
+### Step 3：部署到 Antigravity
+
+把 `version.dll` 和 `config.json` 复制到 **Antigravity 主程序目录**（与 `Antigravity.exe` 同级）。
+
+常见路径示例：
+
+```
+C:\Users\<用户名>\AppData\Local\Programs\Antigravity
+```
+
+### Step 4：启动并验证
+
+启动 Antigravity 后，看日志是否生成：
+
+- `<Antigravity目录>\logs\proxy-YYYYMMDD.log`
+- 或 `%TEMP%\antigravity-proxy-logs\proxy-YYYYMMDD.log`
+
+日志里出现以下关键行，基本就算成功：
+- `Antigravity-Proxy DLL 已加载`
+- `配置加载成功`
+- `SOCKS5: 隧道建立成功`
+
+### Step 5：出问题怎么排（最常见三类）
+
+1. **没有日志**：DLL 没加载，多数是放错目录或位数不匹配。  
+2. **0xC0000142 / 0xC000007B**：通常是位数不匹配或 VC++ 运行库缺失。  
+3. **10061 (WSAECONNREFUSED)**：代理没启动或端口写错。  
+
+### Step 6：回退很简单
+
+删除 `version.dll` 和 `config.json`，恢复原状。
 
 ## 适用边界
 
