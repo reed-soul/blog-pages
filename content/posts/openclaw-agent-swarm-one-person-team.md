@@ -24,7 +24,7 @@ translationAuthor: "Elvis (@elvissun)"
 - **30 分钟内 7 个 PR**。从想法到生产部署极快，因为编码和验证基本都自动化了。
 - **Commits → MRR**：我用这个系统构建一个真实的 B2B SaaS——结合创始人主导的销售，大多数功能请求当天就能交付。速度能把潜在客户转化为付费用户。
 
-![before Jan: CC/codex only | after Jan: Openclaw orchestrates CC/codex](https://x.com/elvissun/status/2025920521871716562/photo/1)
+> 📊 **图表**：原文包含一张 git 提交历史对比图，展示了使用 OpenClaw 前后的提交频率变化——1月之前只有 CC/codex，1月之后 OpenClaw 编排了 CC/codex agents。[查看原图](https://x.com/elvissun/status/2025920521871716562)
 
 我的 git 历史看起来就像我刚雇佣了一个开发团队。实际上只是我——从直接管理 Claude Code，变成了管理一个 OpenClaw agent，而这个 agent 管理着一群其他的 Claude Code 和 Codex agents。
 
@@ -42,7 +42,7 @@ OpenClaw 改变了这个等式。它作为你与所有 agents 之间的编排层
 
 ## 高层系统架构
 
-![System Architecture](https://x.com/elvissun/status/2025920521871716562/photo/2)
+> 📊 **架构图**：原文包含一张系统架构图，展示了 OpenClaw 如何作为编排层管理多个 coding agents。[查看原图](https://x.com/elvissun/status/2025920521871716562)
 
 上周 Stripe 写了他们的后台 agent 系统 "Minions"——由中央编排层支持的并行编码 agents。我不小心构建了同样的东西，但它运行在我的 Mac mini 上。
 
@@ -57,7 +57,7 @@ OpenClaw 改变了这个等式。它作为你与所有 agents 之间的编排层
 
 这就是为什么两层系统有效：每个 AI 都加载了它精确需要的内容。
 
-![OpenClaw vs Codex Context](https://x.com/elvissun/status/2025920521871716562/photo/3)
+> 📊 **上下文对比图**：原文包含一张 OpenClaw vs Codex 的上下文对比图，展示了两者加载的不同类型信息。[查看原图](https://x.com/elvissun/status/2025920521871716562)
 
 **通过上下文实现专业化，而不是通过不同的模型。**
 
