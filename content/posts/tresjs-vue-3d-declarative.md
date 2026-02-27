@@ -1,24 +1,49 @@
 ---
-title: "TresJS：用 Vue 组件声明式构建 Three.js 3D 场景"
+title: "TresJS 入门教程：用 Vue 组件构建 3D 场景"
 date: 2026-02-27T20:30:00+08:00
 draft: false
-tags: ["Vue", "Three.js", "TresJS", "WebGL", "前端", "3D"]
+tags: ["Vue", "Three.js", "TresJS", "WebGL", "教程"]
 categories: ["前端开发"]
-description: "告别命令式 Three.js 代码，用 Vue 组件的方式声明式构建 3D 场景，享受响应式数据驱动的开发体验。"
+description: "本文介绍如何使用 TresJS 库，以 Vue 组件的声明式语法构建 Three.js 3D 场景，大幅降低 WebGL 开发门槛。"
 ---
 
-如果你用过 Three.js，一定写过这样的代码：
+WebGL 是在网页上渲染 3D 图形的核心技术，但直接使用 WebGL API 编程非常繁琐。Three.js 封装了 WebGL，让 3D 开发变得简单一些，但对于习惯声明式编程的前端开发者来说，仍然有不小的学习成本。
 
-```js
+TresJS 是一个将 Three.js 与 Vue 3 深度结合的库，它让我们可以用 Vue 组件的方式来构建 3D 场景。本文将介绍 TresJS 的基本用法。
+
+![3D 渲染示例](https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop)
+
+<!--more-->
+
+## 一、Three.js 的痛点
+
+使用原生 Three.js 创建一个简单的旋转立方体，代码大致如下：
+
+```javascript
+// 1. 创建场景
 const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-const renderer = new THREE.WebGLRenderer()
 
-const geometry = new THREE.BoxGeometry()
-const material = new THREE.MeshBasicMaterial({ color: 0x00FF00 })
+// 2. 创建相机
+const camera = new THREE.PerspectiveCamera(
+  75, 
+  window.innerWidth / window.innerHeight, 
+  0.1, 
+  1000
+)
+camera.position.z = 5
+
+// 3. 创建渲染器
+const renderer = new THREE.WebGLRenderer()
+renderer.setSize(window.innerWidth, window.innerHeight)
+document.body.appendChild(renderer.domElement)
+
+// 4. 创建几何体和材质
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
 const cube = new THREE.Mesh(geometry, material)
 scene.add(cube)
 
+// 5. 动画循环
 function animate() {
   requestAnimationFrame(animate)
   cube.rotation.x += 0.01
@@ -28,11 +53,11 @@ function animate() {
 animate()
 ```
 
-命令式、冗长、难以维护。每次要调整一个物体，都得翻文档找 API。
+这段代码有 20 多行，涉及多个概念：场景（Scene）、相机（Camera）、渲染器（Renderer）、几何体（Geometry）、材质（Material）、网格（Mesh）。每一步都需要手动创建和配置，这就是命令式编程的特点——你需要告诉计算机"怎么做"。
 
-<!--more-->
+## 二、TresJS 的声明式写法
 
-现在，用 **TresJS**，同样的场景可以这样写：
+使用 TresJS，同样的效果可以这样实现：
 
 ```vue
 <template>
@@ -40,53 +65,33 @@ animate()
     <TresPerspectiveCamera :position="[0, 0, 5]" />
     <TresMesh>
       <TresBoxGeometry />
-      <TresMeshBasicMaterial :color="0x00FF00" />
+      <TresMeshBasicMaterial color="#00ff00" />
     </TresMesh>
   </TresCanvas>
 </template>
+
+<script setup>
+import { TresCanvas } from '@tresjs/core'
+</script>
 ```
 
-干净、声明式、符合 Vue 开发直觉。
+这就是声明式编程——你只需要描述"是什么"，框架会帮你处理"怎么做"。
 
-## TresJS 是什么？
+![声明式 vs 命令式](https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop)
 
-TresJS（西班牙语"三"，读作 /tres/）是一个让 Vue 开发者用组件方式构建 Three.js 3D 场景的库。
+## 三、安装与配置
 
-### 核心价值
-
-**1. 声明式语法**
-
-用 Vue 组件描述 3D 场景，而不是写一堆 `new THREE.XXX()`。
-
-**2. 响应式绑定**
-
-直接用 Vue 的响应式数据驱动 3D 物体属性变化，动画状态管理变得简单。
-
-**3. 始终兼容最新 Three.js**
-
-基于 Vue Custom Renderer，Three.js 更新时 TresJS 自动跟进，无需等待封装层更新。
-
-**4. TypeScript 全量支持**
-
-完整的类型定义，IDE 智能提示和类型检查。
-
-**5. Nuxt 集成**
-
-官方提供 Nuxt 模块，SSR 和 SEO 友好。
-
-## 快速开始
-
-### 安装
+### 3.1 安装依赖
 
 ```bash
-# 使用 npm
 npm install @tresjs/core three
-
-# 或使用 pnpm
+# 或
 pnpm add @tresjs/core three
 ```
 
-### 最小示例
+注意，`three` 是 peer dependency，必须单独安装。
+
+### 3.2 基本用法
 
 ```vue
 <script setup lang="ts">
@@ -94,104 +99,193 @@ import { TresCanvas } from '@tresjs/core'
 </script>
 
 <template>
-  <TresCanvas clear-color="#82DBC5">
+  <TresCanvas clear-color="#1a1a2e">
+    <!-- 3D 内容 -->
+  </TresCanvas>
+</template>
+
+<style scoped>
+/* TresCanvas 需要明确的宽高 */
+canvas {
+  width: 100%;
+  height: 100vh;
+  display: block;
+}
+</style>
+```
+
+## 四、核心概念
+
+### 4.1 TresCanvas
+
+`TresCanvas` 是所有 3D 内容的根容器。它自动完成三件事：
+
+1. 创建 Three.js 的 Scene（场景）
+2. 创建 WebGLRenderer（渲染器）
+3. 启动渲染循环（Render Loop）
+
+![TresCanvas 架构](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop)
+
+常用属性：
+
+| 属性 | 说明 | 默认值 |
+|------|------|--------|
+| `clear-color` | 背景色 | `#000000` |
+| `shadows` | 是否启用阴影 | `false` |
+| `shadow-map-type` | 阴影类型 | `PCFSoftShadowMap` |
+
+### 4.2 相机
+
+TresJS 提供了 `TresPerspectiveCamera`（透视相机）和 `TresOrthographicCamera`（正交相机）。
+
+```vue
+<TresPerspectiveCamera 
+  :position="[4, 4, 4]" 
+  :look-at="[0, 0, 0]"
+  :fov="75"
+/>
+```
+
+属性说明：
+- `position`：相机位置 [x, y, z]
+- `look-at`：相机朝向的目标点
+- `fov`：视场角（Field of View）
+
+### 4.3 网格与几何体
+
+在 Three.js 中，Mesh（网格）= Geometry（几何体）+ Material（材质）。TresJS 保持了这个结构：
+
+```vue
+<TresMesh>
+  <TresBoxGeometry :args="[1, 1, 1]" />
+  <TresMeshStandardMaterial color="orange" />
+</TresMesh>
+```
+
+![Mesh 结构图](https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=400&fit=crop)
+
+**组件命名规则**：Three.js 的类名去掉 `THREE.` 前缀，加上 `Tres`：
+
+| Three.js | TresJS |
+|----------|--------|
+| `THREE.BoxGeometry` | `<TresBoxGeometry>` |
+| `THREE.SphereGeometry` | `<TresSphereGeometry>` |
+| `THREE.MeshStandardMaterial` | `<TresMeshStandardMaterial>` |
+
+**args 属性**：对应 Three.js 构造函数的参数。例如：
+
+```javascript
+// Three.js
+new THREE.BoxGeometry(2, 2, 2)
+
+// TresJS
+<TresBoxGeometry :args="[2, 2, 2]" />
+```
+
+### 4.4 光照
+
+3D 场景需要光照才能看到物体：
+
+```vue
+<!-- 环境光：均匀照亮所有物体 -->
+<TresAmbientLight :intensity="0.5" />
+
+<!-- 方向光：模拟太阳光 -->
+<TresDirectionalLight 
+  :position="[5, 5, 5]" 
+  :intensity="1" 
+  cast-shadow
+/>
+```
+
+![光照效果对比](https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&h=400&fit=crop)
+
+## 五、一个完整的示例
+
+下面是一个完整的可运行示例，包含旋转动画：
+
+```vue
+<script setup lang="ts">
+import { ref, onUnmounted } from 'vue'
+import { TresCanvas, useRenderLoop } from '@tresjs/core'
+
+const boxRef = ref(null)
+const { onLoop } = useRenderLoop()
+
+// 旋转动画
+const unsubscribe = onLoop(({ delta }) => {
+  if (boxRef.value) {
+    boxRef.value.rotation.y += delta
+  }
+})
+
+onUnmounted(() => {
+  unsubscribe()
+})
+</script>
+
+<template>
+  <TresCanvas clear-color="#1a1a2e" :shadows="true">
+    <!-- 相机 -->
     <TresPerspectiveCamera :position="[3, 3, 3]" :look-at="[0, 0, 0]" />
-    <TresMesh>
+    
+    <!-- 立方体 -->
+    <TresMesh ref="boxRef" cast-shadow>
       <TresBoxGeometry :args="[1, 1, 1]" />
-      <TresMeshStandardMaterial color="orange" />
+      <TresMeshStandardMaterial color="#ff6b6b" />
     </TresMesh>
-    <TresDirectionalLight :position="[0, 2, 4]" :intensity="2" />
-    <TresAmbientLight :intensity="0.5" />
+    
+    <!-- 地面 -->
+    <TresMesh :position="[0, -1, 0]" receive-shadow>
+      <TresPlaneGeometry :args="[10, 10]" />
+      <TresMeshStandardMaterial color="#4a4a4a" />
+    </TresMesh>
+    
+    <!-- 光照 -->
+    <TresAmbientLight :intensity="0.4" />
+    <TresDirectionalLight 
+      :position="[5, 5, 5]" 
+      :intensity="1" 
+      cast-shadow
+    />
   </TresCanvas>
 </template>
 ```
 
-运行后你会看到一个橙色的立方体。
+## 六、响应式数据绑定
 
-## 核心概念
-
-### 1. TresCanvas — 场景容器
-
-`<TresCanvas>` 是所有 3D 内容的根容器，自动创建 Scene、Renderer、Render Loop。
-
-```vue
-<TresCanvas 
-  :shadows="true"
-  :shadow-map-type="PCFSoftShadowMap"
-  clear-color="#111"
->
-  <!-- 3D 内容 -->
-</TresCanvas>
-```
-
-### 2. 组件命名规则
-
-Three.js 的类名前缀去掉，加上 `Tres`：
-
-| Three.js | TresJS 组件 |
-|----------|-------------|
-| `THREE.PerspectiveCamera` | `<TresPerspectiveCamera>` |
-| `THREE.Mesh` | `<TresMesh>` |
-| `THREE.BoxGeometry` | `<TresBoxGeometry>` |
-| `THREE.MeshStandardMaterial` | `<TresMeshStandardMaterial>` |
-
-### 3. 属性绑定
-
-Three.js 构造函数参数通过 `args` 传递，属性直接绑定：
-
-```vue
-<TresBoxGeometry :args="[2, 2, 2]" />
-<TresMeshStandardMaterial :color="materialColor" :metalness="0.5" />
-```
-
-### 4. 响应式更新
-
-Vue 的响应式数据变化会自动反映到 3D 场景：
+TresJS 最大的优势是可以直接使用 Vue 的响应式系统：
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const cubeScale = ref(1)
-const color = ref('orange')
+const scale = ref(1)
+const color = ref('#ff6b6b')
 
-// 2秒后放大并变色
-setTimeout(() => {
-  cubeScale.value = 2
-  color.value = 'blue'
-}, 2000)
+const enlarge = () => {
+  scale.value = 2
+  color.value = '#4ecdc4'
+}
 </script>
 
 <template>
-  <TresMesh :scale="cubeScale">
-    <TresBoxGeometry />
-    <TresMeshStandardMaterial :color="color" />
-  </TresMesh>
+  <button @click="enlarge">放大</button>
+  
+  <TresCanvas>
+    <TresMesh :scale="scale">
+      <TresBoxGeometry />
+      <TresMeshStandardMaterial :color="color" />
+    </TresMesh>
+  </TresCanvas>
 </template>
 ```
 
-## 实用技巧
+当 `scale` 或 `color` 变化时，3D 场景会自动更新，无需手动调用 `render()`。
 
-### 使用 Composables
+## 七、加载 3D 模型
 
-TresJS 提供了实用的 composables：
-
-```vue
-<script setup lang="ts">
-import { useRenderLoop } from '@tresjs/core'
-
-const { onLoop } = useRenderLoop()
-
-onLoop(({ delta }) => {
-  // 每帧执行，delta 是时间差
-  mesh.value.rotation.y += delta
-})
-</script>
-```
-
-### 加载 3D 模型
-
-配合 `@tresjs/cientos` 包可以轻松加载 GLTF 模型：
+实际项目中，我们通常使用 Blender 等工具建模，然后导出为 GLTF 格式。TresJS 通过 `@tresjs/cientos` 包支持模型加载：
 
 ```bash
 pnpm add @tresjs/cientos
@@ -205,16 +299,25 @@ const { scene } = await useGLTF('/models/robot.gltf')
 </script>
 
 <template>
-  <primitive :object="scene" />
+  <TresCanvas>
+    <primitive :object="scene" />
+  </TresCanvas>
 </template>
 ```
 
-### 鼠标交互
+![3D 模型示例](https://images.unsplash.com/photo-1617802690992-15d93263d3a9?w=800&h=400&fit=crop)
+
+**注意**：模型文件建议放在 `public` 目录下，使用绝对路径引用。
+
+## 八、交互事件
+
+TresJS 支持常见的鼠标事件：
 
 ```vue
 <script setup lang="ts">
 const handleClick = (event) => {
-  console.log('点击了物体', event.object)
+  console.log('点击位置：', event.point)
+  console.log('点击物体：', event.object)
 }
 
 const handlePointerEnter = () => {
@@ -233,58 +336,58 @@ const handlePointerLeave = () => {
     @pointer-leave="handlePointerLeave"
   >
     <TresBoxGeometry />
-    <TresMeshStandardMaterial />
+    <TresMeshStandardMaterial color="orange" />
   </TresMesh>
 </template>
 ```
 
-## 生态系统
+## 九、生态系统
 
-TresJS 有丰富的官方扩展包：
+TresJS 提供了多个扩展包：
 
 | 包名 | 用途 |
 |------|------|
 | `@tresjs/core` | 核心库 |
-| `@tresjs/cientos` | 常用工具集合（轨道控制、加载器等） |
-| `@tresjs/post-processing` | 后处理效果 |
+| `@tresjs/cientos` | 常用工具：轨道控制、GLTF 加载器等 |
+| `@tresjs/post-processing` | 后处理效果：模糊、发光等 |
 | `@tresjs/nuxt` | Nuxt 集成模块 |
-| `@tresjs/leches` | Storybook 风格的组件展示 |
 
-## 对比其他方案
+## 十、与其他方案对比
 
-| 特性 | TresJS | TroisJS | react-three-fiber |
+| 特性 | TresJS | TroisJS | React Three Fiber |
 |------|--------|---------|-------------------|
 | 框架 | Vue 3 | Vue 3 | React |
-| Three.js 更新 | 即时 | 滞后 | 即时 |
-| TypeScript | 完整 | 部分 | 完整 |
-| 生态 | 成长中 | 较少 | 丰富 |
-| 学习曲线 | 低 | 低 | 中 |
+| 维护状态 | 活跃 | 停滞 | 活跃 |
+| TypeScript | 完整支持 | 部分支持 | 完整支持 |
+| 学习曲线 | 低 | 低 | 中等 |
 
-TroisJS 曾是 Vue + Three.js 的首选，但维护不够活跃。TresJS 是新一代替代方案，设计更现代，更新更及时。
+TroisJS 曾经是 Vue 生态的首选，但目前维护不够活跃。TresJS 是新一代解决方案，设计更加现代。
 
-## 适用场景
+## 十一、适用场景
 
 **推荐使用：**
-- 产品 3D 展示页
-- 交互式数据可视化
-- 轻量级 WebGL 游戏
-- 建筑/室内设计展示
-- 品牌官网 3D 特效
+- 产品 3D 展示页面
+- 数据可视化
+- 轻量级 WebGL 交互
+- 建筑与室内设计展示
 
-**不推荐：**
-- 复杂 3D 游戏（用 Unity/Unreal）
+**不推荐使用：**
+- 复杂 3D 游戏（建议使用 Unity 或 Unreal）
 - 大规模场景（需要 LOD、遮挡剔除等高级优化）
-- 需要物理引擎的项目（可配合 Cannon.js，但需要更多配置）
+- 需要物理引擎的项目（可配合 Cannon.js，但配置较复杂）
 
-## 总结
+## 十二、小结
 
-TresJS 让 Vue 开发者可以用熟悉的方式进入 3D 开发领域。如果你是 Vue 开发者，想要快速给项目添加 3D 效果、用声明式思维构建 3D 场景、享受 Vue 生态的响应式和组件化，TresJS 值得一试。
+TresJS 为 Vue 开发者提供了一条进入 3D Web 开发的捷径。通过声明式组件和响应式数据绑定，我们可以用熟悉的 Vue 语法来构建 3D 场景，大大降低了 Three.js 的学习成本。
+
+如果你正在寻找一个 Vue 友好的 3D 开发方案，TresJS 值得一试。
 
 ---
 
-**相关链接：**
+## 参考链接
 
-- 官网：https://tresjs.org
-- GitHub：https://github.com/Tresjs/tres
-- 在线 Playground：https://play.tresjs.org
-- Discord 社区：https://tresjs.org/discord
+- [TresJS 官方文档](https://docs.tresjs.org/)
+- [TresJS GitHub 仓库](https://github.com/Tresjs/tres)
+- [在线 Playground](https://play.tresjs.org/)
+- [Three.js 官方文档](https://threejs.org/docs/)
+- [Discord 社区](https://tresjs.org/discord)
