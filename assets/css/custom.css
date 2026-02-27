@@ -1,0 +1,39 @@
+/* 代码块字体大小调整 */
+pre, code, pre code {
+  font-size: 0.85rem !important;
+  line-height: 1.5 !important;
+}
+
+/* 代码块整体 */
+pre {
+  overflow-x: auto !important;
+  padding: 1rem !important;
+}
+
+/* 行内代码 */
+code {
+  padding: 0.2em 0.4em;
+  font-size: 0.85em !important;
+}
+
+/* 表格横向滚动 */
+table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+}
+
+/* 表格单元格不换行 */
+th, td {
+  white-space: nowrap;
+  padding: 0.5rem 0.75rem;
+}
+
+/* 表格容器（如果主题有包装的话） */
+.table-wrapper, 
+div:has(> table) {
+  overflow-x: auto;
+  width: 100%;
+}
