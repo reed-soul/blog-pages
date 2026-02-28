@@ -5,7 +5,7 @@ draft: false
 tags: ["AI", "开源工具", "视频制作", "Next.js", "自动化"]
 categories: ["技术推荐"]
 description: "一款基于 AI 技术的开源短剧/漫画视频制作工具，支持从小说文本自动生成分镜、角色、场景，并制作成完整视频。"
-cover: https://images.unsplash.com/photo-1626544827763-d516dce335e2?w=1080&h=864&fit=crop
+cover: /images/waoowaoo-cover.jpg
 ---
 
 ## 一、背景：AI 视频制作的痛点

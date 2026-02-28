@@ -5,6 +5,7 @@ draft: false
 tags: ["Vue", "Three.js", "TresJS", "WebGL", "教程"]
 categories: ["前端开发"]
 description: "本文介绍如何使用 TresJS 库，以 Vue 组件的声明式语法构建 Three.js 3D 场景，大幅降低 WebGL 开发门槛。"
+cover: https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1080&h=864&fit=crop
 ---
 
 WebGL 是在网页上渲染 3D 图形的核心技术，但直接使用 WebGL API 编程非常繁琐。Three.js 封装了 WebGL，让 3D 开发变得简单一些，但对于习惯声明式编程的前端开发者来说，仍然有不小的学习成本。
